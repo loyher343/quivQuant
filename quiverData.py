@@ -1,27 +1,36 @@
-import requests
+import secrets
+import requests, json, pandas as pd, secrets
+
+from secrets import TOKEN
 
 
 
-url = "https://api.quiverquant.com/beta/historical/senatetrading/NVDA"
+
+
+url = "https://api.quiverquant.com/beta/live/congresstrading"
 headers = {'accept': 'application/json',
 'X-CSRFToken': 'TyTJwjuEC7VV7mOqZ622haRaaUr0x0Ng4nrwSRFKQs7vdoBcJlK9qjAS69ghzhFu',
-'Authorization': 'c4d32ba06a03af7a421e69c4c3a6e9656f6fdd65'}
+'Authorization': 'Token '+ TOKEN}
 r = requests.get(url, headers=headers)
-print(r.content)
+jsData = json.loads(r.content)
+df = pd.DataFrame(jsData)
+df["ReportDate"] = pd.to_datetime(df["ReportDate"])
+df["TransactionDate"] = pd.to_datetime(df["TransactionDate"])
+print(df)
 
-
+# import quiverquant
 # #Connect to the API using your token
 # #Replace <TOKEN> with your token
-# quiver = quiverquant.quiver(secrets/TOKEN)
+# quiver = quiverquant.quiver('c4d32ba06a03af7a421e69c4c3a6e9656f6fdd65')
 
 # #Get data on WallStreetBets discussion
-# #dfWSB = quiver.wallstreetbets()
+# dfWSB = quiver.wallstreetbets()
 
 # #Get recent trades by members of U.S. Congress
-# #dfCongress = quiver.congress_trading()
+# dfCongress = quiver.congress_trading()
 
 # #Get trades of a Tesla by members of congress
-# dfCongress_Tesla = quiver.congress_trading("TSLA")
+# #dfCongress_Tesla = quiver.congress_trading("TSLA")
 
 # #Get trades made by U.S. Senator Richard Burr
 # #dfCongress_Burr = quiver.congress_trading("Richard Burr", politician=True)
@@ -45,4 +54,5 @@ print(r.content)
 # #dfWiki = quiver.wikipedia()
 
 # #Get data on Wikipedia page views of Microsoft
-# dfWiki_Microsoft = quiver.wikipedia("MSFT")
+# #dfWiki_Microsoft = quiver.wikipedia("MSFT")
+# print(dfWSB)
