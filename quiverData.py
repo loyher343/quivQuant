@@ -1,11 +1,5 @@
-import secrets
-import requests, json, pandas as pd, secrets
-
+import requests, json, pandas as pd
 from secrets import TOKEN
-
-
-
-
 
 url = "https://api.quiverquant.com/beta/live/congresstrading"
 headers = {'accept': 'application/json',
@@ -16,12 +10,13 @@ jsData = json.loads(r.content)
 df = pd.DataFrame(jsData)
 df["ReportDate"] = pd.to_datetime(df["ReportDate"])
 df["TransactionDate"] = pd.to_datetime(df["TransactionDate"])
+df.to_csv('data.csv')
 print(df)
 
 # import quiverquant
 # #Connect to the API using your token
 # #Replace <TOKEN> with your token
-# quiver = quiverquant.quiver('c4d32ba06a03af7a421e69c4c3a6e9656f6fdd65')
+# quiver = quiverquant.quiver(TOKEN)
 
 # #Get data on WallStreetBets discussion
 # dfWSB = quiver.wallstreetbets()
