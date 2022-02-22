@@ -29,25 +29,28 @@ headers = {'Authorization': token, 'User-Agent': 'APP-NAME by REDDIT-USERNAME'}
 # response = requests.get(api_url + '/subreddits/search', headers=headers, params=payload)
 # print(response.json())
 
-payload = {'limit': 10}
+payload = {'limit': 25}
 response = requests.get(api_url + '/r/wallstreetbets/rising', headers=headers, params=payload)
 parse = response.json()
 #['data']['children'][i]['selftext']
-#print(json.dumps(parse['data']['children'], indent = 4))
+print(json.dumps(parse['data']['children'], indent = 4))
 posts = response.json()['data']['children']
 #print(json.dumps(posts, indent = 4))
 
 print('/////////////////////////////////////////////////////////////////////////////////////////               ')
-
+#"link_flair_text": "DD"
 list = []
 for i in range(len(posts)):
     post = posts[i]['data']
-    parsedPosts = { 
-        'title' : post['title'],
-        'upVotes' : post['ups'],
-        'upRation' : post['upvote_ratio'],
-        'text' : post['selftext']
-    }
-    list.append(parsedPosts)
+    if post['link_flair_text'] == 'DD':
+        parsedPosts = { 
+            'title' : post['title'],
+            'upVotes' : post['ups'],
+            'upRation' : post['upvote_ratio'],
+            #'text' : post['selftext']
+        }
+        list.append(parsedPosts)
 
-print(list)
+for x in range(len(list)):
+    print(list[x])
+print(len(list))
