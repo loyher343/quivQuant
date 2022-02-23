@@ -29,11 +29,11 @@ headers = {'Authorization': token, 'User-Agent': 'APP-NAME by REDDIT-USERNAME'}
 # response = requests.get(api_url + '/subreddits/search', headers=headers, params=payload)
 # print(response.json())
 
-payload = {'limit': 25}
-response = requests.get(api_url + '/r/wallstreetbets/rising', headers=headers, params=payload)
+payload = {}
+response = requests.get(api_url + '/r/wallstreetbets', headers=headers, params=payload)
 parse = response.json()
 #['data']['children'][i]['selftext']
-print(json.dumps(parse['data']['children'], indent = 4))
+#print(json.dumps(parse['data']['children'], indent = 4))
 posts = response.json()['data']['children']
 #print(json.dumps(posts, indent = 4))
 
@@ -42,15 +42,22 @@ print('/////////////////////////////////////////////////////////////////////////
 list = []
 for i in range(len(posts)):
     post = posts[i]['data']
-    if post['link_flair_text'] == 'DD':
-        parsedPosts = { 
-            'title' : post['title'],
-            'upVotes' : post['ups'],
-            'upRation' : post['upvote_ratio'],
-            #'text' : post['selftext']
-        }
-        list.append(parsedPosts)
+    # if post['link_flair_text'] == 'DD' or 'yolo':
+    #     parsedPosts = { 
+    #         'title' : post['title'],
+    #         'upVotes' : post['ups'],
+    #         'upRation' : post['upvote_ratio'],
+    #         'text' : post['selftext']
+    #     }
+    parsedPosts = { 
+        'title' : post['title'],
+        'upVotes' : post['ups'],
+        'upRation' : post['upvote_ratio'],
+        'text' : post['selftext']
+    }
+    list.append(parsedPosts)
 
 for x in range(len(list)):
-    print(list[x])
+    #print(list[x],'\n =============================================== \n',list[x]['text'])
+    print(list[x]['title'],'   ',list[x]['upRation'])
 print(len(list))
